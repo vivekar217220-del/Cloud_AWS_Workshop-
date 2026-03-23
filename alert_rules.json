@@ -1,0 +1,34 @@
+[
+  {
+    "alert_id": "A001",
+    "type": "SENTIMENT_DROP",
+    "condition": "negative_sentiment > 50%",
+    "message": "⚠️ ALERT: Negative sentiment exceeding 50% for {product_name}. Immediate quality check recommended!",
+    "severity": "HIGH",
+    "action": "Review product quality, check recent batches, contact supplier"
+  },
+  {
+    "alert_id": "A002",
+    "type": "DEMAND_SURGE",
+    "condition": "search_volume_growth > 30%",
+    "message": "📈 OPPORTUNITY: {category} demand surging by {growth_rate}%! Stock up immediately!",
+    "severity": "MEDIUM",
+    "action": "Increase inventory, negotiate bulk pricing with suppliers"
+  },
+  {
+    "alert_id": "A003",
+    "type": "TRENDING_CATEGORY",
+    "condition": "trend == rising AND growth_rate > 25%",
+    "message": "🔥 TRENDING: {category} - {product_type} is trending with {growth_rate}% growth!",
+    "severity": "LOW",
+    "action": "Consider expanding product range in this category"
+  },
+  {
+    "alert_id": "A004",
+    "type": "DECLINING_CATEGORY",
+    "condition": "trend == declining",
+    "message": "📉 WARNING: {category} - {product_type} showing declining interest. Consider reducing stock.",
+    "severity": "MEDIUM",
+    "action": "Reduce inventory orders, offer discounts to clear stock"
+  }
+]

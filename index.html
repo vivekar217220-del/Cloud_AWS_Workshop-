@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetailPulse - Retail Intelligence Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #1a1a3e 0%, #0f0f23 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #6366f1, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a78bfa;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e1e3f 0%, #16162e 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #6366f1, #a78bfa);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.2);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .stat-card .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .stat-card .label {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .stat-card.positive .value { color: #10b981; }
+        .stat-card.positive::before { background: linear-gradient(90deg, #10b981, #34d399); }
+        
+        .stat-card.negative .value { color: #ef4444; }
+        .stat-card.negative::before { background: linear-gradient(90deg, #ef4444, #f87171); }
+        
+        .stat-card.warning .value { color: #f59e0b; }
+        .stat-card.warning::before { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+
+        /* Section */
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            color: #6366f1;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #1e1e3f 0%, #16162e 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-positive {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-negative {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .badge-mixed {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .badge-neutral {
+            background: rgba(148, 163, 184, 0.2);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+        }
+
+        /* Sentiment Bar */
+        .sentiment-bar {
+            display: flex;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .sentiment-bar .positive {
+            background: #10b981;
+        }
+
+        .sentiment-bar .negative {
+            background: #ef4444;
+        }
+
+        .sentiment-bar .neutral {
+            background: #64748b;
+        }
+
+        .sentiment-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        /* Alerts */
+        .alert-item {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 12px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: all 0.3s;
+        }
+
+        .alert-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .alert-item.high {
+            border-left: 4px solid #ef4444;
+        }
+
+        .alert-item.medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .alert-item.low {
+            border-left: 4px solid #10b981;
+        }
+
+        .alert-icon {
+            font-size: 1.5rem;
+            min-width: 30px;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-message {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .alert-action {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .alert-meta {
+            font-size: 0.7rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Charts Container */
+        .chart-container {
+            background: linear-gradient(135deg, #1e1e3f 0%, #16162e 100%);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        /* Trend Card */
+        .trend-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        .trend-item:last-child {
+            border-bottom: none;
+        }
+
+        .trend-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .trend-info p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .trend-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .trend-rising {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .trend-declining {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .trend-stable {
+            background: rgba(148, 163, 184, 0.15);
+            color: #94a3b8;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            color: #94a3b8;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(99, 102, 241, 0.2);
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s;
+        }
+
+        /* Rating Stars */
+        .stars {
+            color: #fbbf24;
+            font-size: 0.85rem;
+        }
+
+        /* Region Map Placeholder */
+        .region-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .region-item {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 10px;
+            padding: 0.75rem;
+            text-align: center;
+        }
+
+        .region-item h4 {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .region-item .count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        /* Notification Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1e1e3f;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateX(200%);
+            transition: transform 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-success { border-left: 4px solid #10b981; }
+        .toast-error { border-left: 4px solid #ef4444; }
+        .toast-info { border-left: 4px solid #6366f1; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content { padding: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .cards-grid { grid-template-columns: 1fr; }
+            .charts-row { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 10px; }
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 4px;
+            background: rgba(99, 102, 241, 0.05);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #94a3b8;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a78bfa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Pulse animation for live indicator */
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">📊</div>
+            <div>
+                <h1>RetailPulse</h1>
+                <p>Retail & Market Intelligence Engine</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <span style="display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: #94a3b8;">
+                <span class="live-dot"></span> Live
+            </span>
+            <button class="btn btn-secondary" onclick="runIngestion()">
+                <i class="fas fa-download"></i> Ingest Data
+            </button>
+            <button class="btn btn-primary" onclick="runAnalysis()">
+                <i class="fas fa-brain"></i> Run Analysis
+            </button>
+            <button class="btn btn-success" onclick="refreshDashboard()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Loading -->
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading RetailPulse Dashboard...</p>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div id="dashboard-content" style="display: none;">
+            <!-- Stats Overview -->
+            <div class="stats-grid" id="stats-grid">
+                <!-- Filled by JS -->
+            </div>
+
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchTab('overview')">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </button>
+                <button class="tab-btn" onclick="switchTab('products')">
+                    <i class="fas fa-box"></i> Products
+                </button>
+                <button class="tab-btn" onclick="switchTab('trends')">
+                    <i class="fas fa-chart-line"></i> Trends
+                </button>
+                <button class="tab-btn" onclick="switchTab('alerts')">
+                    <i class="fas fa-bell"></i> Alerts
+                </button>
+                <button class="tab-btn" onclick="switchTab('regions')">
+                    <i class="fas fa-map-marker-alt"></i> Regions
+                </button>
+            </div>
+
+            <!-- Overview Tab -->
+            <div id="tab-overview" class="tab-content active">
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <h3 style="margin-bottom: 1rem;"><i class="fas fa-chart-pie" style="color: #6366f1;"></i> Sentiment Distribution</h3>
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3 style="margin-bottom: 1rem;"><i class="fas fa-chart-bar" style="color: #6366f1;"></i> Category Performance</h3>
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <h3 style="margin-bottom: 1rem;"><i class="fas fa-chart-line" style="color: #6366f1;"></i> Market Trends</h3>
+                        <canvas id="trendsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3 style="margin-bottom: 1rem;"><i class="fas fa-chart-area" style="color: #6366f1;"></i> Rating Distribution</h3>
+                        <canvas id="ratingChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Tab -->
+            <div id="tab-products" class="tab-content">
+                <div class="cards-grid" id="products-grid">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Trends Tab -->
+            <div id="tab-trends" class="tab-content">
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-fire" style="color: #6366f1;"></i> Market Trends Analysis</h3>
+                    <div id="trends-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts Tab -->
+            <div id="tab-alerts" class="tab-content">
+                <div id="alerts-list">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Regions Tab -->
+            <div id="tab-regions" class="tab-content">
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 1rem;"><i class="fas fa-globe-asia" style="color: #6366f1;"></i> Regional Distribution</h3>
+                    <div class="region-grid" id="region-grid">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+                <div class="chart-container" style="margin-top: 1.5rem;">
+                    <canvas id="regionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span id="toast-icon"></span>
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        // ============================================
+        // 🔧 CONFIGURATION - CHANGE THIS URL!
+        // ============================================
+        const API_BASE_URL = 'https://6u9jfmuohi.execute-api.ap-south-1.amazonaws.com/prod';
+        // Example: 'https://abc123xyz.execute-api.ap-south-1.amazonaws.com/prod'
+        // ============================================
+
+        let dashboardData = null;
+        let charts = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            refreshDashboard();
+        });
+
+        // Show Toast
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toast-icon');
+            const msg = document.getElementById('toast-message');
+            
+            toast.className = `toast toast-${type} show`;
+            icon.innerHTML = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+            msg.textContent = message;
+            
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // Switch Tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.closest('.tab-btn').classList.add('active');
+        }
+
+        // Run Data Ingestion
+        async function runIngestion() {
+            showToast('Starting data ingestion...', 'info');
+            try {
+                const response = await fetch(`${API_BASE_URL}/ingest`, { method: 'POST' });
+                const data = await response.json();
+                showToast(`Ingestion complete! ${data.reviews_count || 0} reviews loaded.`, 'success');
+                setTimeout(refreshDashboard, 1000);
+            } catch (error) {
+                showToast('Ingestion failed: ' + error.message, 'error');
+            }
+        }
+
+        // Run Analysis
+        async function runAnalysis() {
+            showToast('Running sentiment analysis...', 'info');
+            try {
+                const response = await fetch(`${API_BASE_URL}/analyze`, { method: 'POST' });
+                const data = await response.json();
+                showToast(`Analysis complete! ${data.products_analyzed || 0} products analyzed.`, 'success');
+                setTimeout(refreshDashboard, 1000);
+            } catch (error) {
+                showToast('Analysis failed: ' + error.message, 'error');
+            }
+        }
+
+        // Refresh Dashboard
+        async function refreshDashboard() {
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('dashboard-content').style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/dashboard`);
+                dashboardData = await response.json();
+                
+                renderStats();
+                renderProducts();
+                renderTrends();
+                renderAlerts();
+                renderRegions();
+                renderCharts();
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('dashboard-content').style.display = 'block';
+                showToast('Dashboard updated!', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loading').innerHTML = `
+                    <div style="text-align: center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
+                        <h3>Connection Error</h3>
+                        <p style="color: #94a3b8; margin: 1rem 0;">Could not connect to API.</p>
+                        <p style="color: #64748b; font-size: 0.85rem;">Make sure you've updated the API_BASE_URL in the code.</p>
+                        <p style="color: #64748b; font-size: 0.85rem;">Current URL: ${API_BASE_URL}</p>
+                        <button class="btn btn-primary" style="margin-top: 1rem;" onclick="refreshDashboard()">
+                            <i class="fas fa-retry"></i> Retry
+                        </button>
+                        <br><br>
+                        <button class="btn btn-secondary" style="margin-top: 0.5rem;" onclick="loadDemoData()">
+                            <i class="fas fa-play"></i> Load Demo Data
+                        </button>
+                    </div>`;
+            }
+        }
+
+        // Load Demo Data (offline fallback)
+        function loadDemoData() {
+            dashboardData = {
+                overview: {
+                    total_products: 9,
+                    total_reviews: 25,
+                    total_alerts: 6,
+                    positive_products: 4,
+                    negative_products: 3,
+                    high_priority_alerts: 2,
+                    rising_trends: 4,
+                    declining_trends: 1
+                },
+                products: [
+                    { product_id: 'P001', product_name: 'Wireless Earbuds Pro', category: 'Electronics', overall_sentiment: 'MIXED', avg_positive: '45', avg_negative: '30', avg_neutral: '25', avg_rating: '3.3', total_reviews: 3 },
+                    { product_id: 'P002', product_name: 'Organic Face Cream', category: 'Beauty', overall_sentiment: 'NEGATIVE', avg_positive: '30', avg_negative: '50', avg_neutral: '20', avg_rating: '2.7', total_reviews: 3 },
+                    { product_id: 'P003', product_name: 'Running Shoes Ultra', category: 'Sports', overall_sentiment: 'MIXED', avg_positive: '35', avg_negative: '40', avg_neutral: '25', avg_rating: '3.0', total_reviews: 3 },
+                    { product_id: 'P004', product_name: 'Smart Water Bottle', category: 'Health', overall_sentiment: 'MIXED', avg_positive: '40', avg_negative: '35', avg_neutral: '25', avg_rating: '2.7', total_reviews: 3 },
+                    { product_id: 'P005', product_name: 'Portable Blender', category: 'Kitchen', overall_sentiment: 'NEGATIVE', avg_positive: '25', avg_negative: '55', avg_neutral: '20', avg_rating: '2.7', total_reviews: 3 },
+                    { product_id: 'P006', product_name: 'Bamboo Sunglasses', category: 'Fashion', overall_sentiment: 'MIXED', avg_positive: '50', avg_negative: '30', avg_neutral: '20', avg_rating: '3.3', total_reviews: 3 },
+                    { product_id: 'P007', product_name: 'AI Study Lamp', category: 'Electronics', overall_sentiment: 'MIXED', avg_positive: '45', avg_negative: '35', avg_neutral: '20', avg_rating: '3.5', total_reviews: 2 },
+                    { product_id: 'P008', product_name: 'Protein Bar Pack', category: 'Health', overall_sentiment: 'MIXED', avg_positive: '40', avg_negative: '35', avg_neutral: '25', avg_rating: '3.0', total_reviews: 3 },
+                    { product_id: 'P009', product_name: 'Yoga Mat Premium', category: 'Sports', overall_sentiment: 'MIXED', avg_positive: '45', avg_negative: '40', avg_neutral: '15', avg_rating: '3.0', total_reviews: 2 }
+                ],
+                trends: [
+                    { category: 'Electronics', product_type: 'Wireless Earbuds', trend_direction: 'rising', growth_rate: '28.5', momentum_score: '80', prediction: '580', recommendation: '📈 Growing market' },
+                    { category: 'Beauty', product_type: 'Organic Skincare', trend_direction: 'rising', growth_rate: '22.1', momentum_score: '65', prediction: '600', recommendation: '📈 Growing market' },
+                    { category: 'Sports', product_type: 'Running Shoes', trend_direction: 'declining', growth_rate: '-6.5', momentum_score: '35', prediction: '195', recommendation: '📉 Declining interest' },
+                    { category: 'Health', product_type: 'Smart Fitness Devices', trend_direction: 'rising', growth_rate: '35.2', momentum_score: '95', prediction: '660', recommendation: '🔥 HOT OPPORTUNITY' },
+                    { category: 'Kitchen', product_type: 'Portable Appliances', trend_direction: 'stable', growth_rate: '2.8', momentum_score: '50', prediction: '122', recommendation: '➡️ Stable market' },
+                    { category: 'Fashion', product_type: 'Sustainable Fashion', trend_direction: 'rising', growth_rate: '42.0', momentum_score: '95', prediction: '700', recommendation: '🔥 HOT OPPORTUNITY' }
+                ],
+                alerts: [
+                    { alert_id: 'A1', type: 'DEMAND_SURGE', severity: 'HIGH', message: '📈 DEMAND SURGE: Fashion - Sustainable Fashion growing at 42%!', action: 'Stock up immediately', timestamp: new Date().toISOString() },
+                    { alert_id: 'A2', type: 'DEMAND_SURGE', severity: 'HIGH', message: '📈 DEMAND SURGE: Health - Smart Fitness Devices growing at 35.2%!', action: 'Increase inventory', timestamp: new Date().toISOString() },
+                    { alert_id: 'A3', type: 'SENTIMENT_DROP', severity: 'HIGH', message: '⚠️ HIGH NEGATIVE SENTIMENT: Portable Blender has 55% negative sentiment!', action: 'Review product quality', timestamp: new Date().toISOString() },
+                    { alert_id: 'A4', type: 'SENTIMENT_DROP', severity: 'MEDIUM', message: '⚠️ NEGATIVE SENTIMENT: Organic Face Cream has 50% negative sentiment', action: 'Check recent batches', timestamp: new Date().toISOString() },
+                    { alert_id: 'A5', type: 'DECLINING_CATEGORY', severity: 'MEDIUM', message: '📉 DECLINING: Sports - Running Shoes declining at -6.5%', action: 'Reduce inventory', timestamp: new Date().toISOString() },
+                    { alert_id: 'A6', type: 'HIGH_SATISFACTION', severity: 'LOW', message: '🌟 TOP PERFORMER: Bamboo Sunglasses has high positive sentiment!', action: 'Feature in promotions', timestamp: new Date().toISOString() }
+                ],
+                region_data: {
+                    'Mumbai': { total: 5, positive: 3, negative: 1 },
+                    'Delhi': { total: 4, positive: 1, negative: 2 },
+                    'Bangalore': { total: 3, positive: 1, negative: 1 },
+                    'Chennai': { total: 3, positive: 2, negative: 0 },
+                    'Hyderabad': { total: 2, positive: 0, negative: 2 },
+                    'Pune': { total: 3, positive: 0, negative: 2 },
+                    'Kolkata': { total: 1, positive: 0, negative: 1 },
+                    'Goa': { total: 1, positive: 1, negative: 0 },
+                    'Jaipur': { total: 1, positive: 1, negative: 0 },
+                    'Rishikesh': { total: 1, positive: 1, negative: 0 }
+                }
+            };
+
+            renderStats();
+            renderProducts();
+            renderTrends();
+            renderAlerts();
+            renderRegions();
+            renderCharts();
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('dashboard-content').style.display = 'block';
+            showToast('Demo data loaded!', 'success');
+        }
+
+        // Render Stats
+        function renderStats() {
+            const overview = dashboardData.overview;
+            const grid = document.getElementById('stats-grid');
+            
+            grid.innerHTML = `
+                <div class="stat-card">
+                    <div class="icon">📦</div>
+                    <div class="value">${overview.total_products}</div>
+                    <div class="label">Products Tracked</div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon">💬</div>
+                    <div class="value">${overview.total_reviews}</div>
+                    <div class="label">Reviews Analyzed</div>
+                </div>
+                <div class="stat-card positive">
+                    <div class="icon">😊</div>
+                    <div class="value">${overview.positive_products}</div>
+                    <div class="label">Positive Products</div>
+                </div>
+                <div class="stat-card negative">
+                    <div class="icon">😟</div>
+                    <div class="value">${overview.negative_products}</div>
+                    <div class="label">Needs Attention</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="icon">🔔</div>
+                    <div class="value">${overview.total_alerts}</div>
+                    <div class="label">Active Alerts</div>
+                </div>
+                <div class="stat-card positive">
+                    <div class="icon">📈</div>
+                    <div class="value">${overview.rising_trends}</div>
+                    <div class="label">Rising Trends</div>
+                </div>
+            `;
+        }
+
+        // Render Products
+        function renderProducts() {
+            const grid = document.getElementById('products-grid');
+            const products = dashboardData.products;
+            
+            grid.innerHTML = products.map(product => {
+                const pos = parseFloat(product.avg_positive) || 0;
+                const neg = parseFloat(product.avg_negative) || 0;
+                const neu = parseFloat(product.avg_neutral) || 0;
+                const rating = parseFloat(product.avg_rating) || 0;
+                const sentiment = product.overall_sentiment || 'MIXED';
+                
+                const badgeClass = sentiment === 'POSITIVE' ? 'badge-positive' : 
+                                   sentiment === 'NEGATIVE' ? 'badge-negative' : 
+                                   sentiment === 'MIXED' ? 'badge-mixed' : 'badge-neutral';
+                
+                const stars = '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+                
+                return `
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">${product.product_name}</div>
+                                <div style="font-size: 0.8rem; color: #94a3b8; margin-top: 2px;">${product.category} • ${product.total_reviews} reviews</div>
+                            </div>
+                            <span class="badge ${badgeClass}">${sentiment}</span>
+                        </div>
+                        <div class="stars">${stars} ${rating}/5</div>
+                        <div class="sentiment-bar">
+                            <div class="positive" style="width: ${pos}%"></div>
+                            <div class="negative" style="width: ${neg}%"></div>
+                            <div class="neutral" style="width: ${neu}%"></div>
+                        </div>
+                        <div class="sentiment-labels">
+                            <span style="color: #10b981;">👍 ${pos}%</span>
+                            <span style="color: #ef4444;">👎 ${neg}%</span>
+                            <span style="color: #64748b;">😐 ${neu}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Trends
+        function renderTrends() {
+            const container = document.getElementById('trends-list');
+            const trends = dashboardData.trends;
+            
+            container.innerHTML = trends.map(trend => {
+                const direction = trend.trend_direction || trend.trend || 'stable';
+                const badgeClass = direction === 'rising' ? 'trend-rising' : 
+                                   direction === 'declining' ? 'trend-declining' : 'trend-stable';
+                const icon = direction === 'rising' ? '↑' : direction === 'declining' ? '↓' : '→';
+                const growthRate = trend.growth_rate || '0';
+                
+                return `
+                    <div class="trend-item">
+                        <div class="trend-info">
+                            <h4>${trend.category} - ${trend.product_type}</h4>
+                            <p>${trend.recommendation || 'Analyzing...'}</p>
+                            <p style="margin-top: 4px;">Momentum: ${trend.momentum_score || 'N/A'}/100 • Predicted: ${trend.prediction || 'N/A'}</p>
+                        </div>
+                        <div class="trend-badge ${badgeClass}">
+                            ${icon} ${growthRate}%
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Alerts
+        function renderAlerts() {
+            const container = document.getElementById('alerts-list');
+            const alerts = dashboardData.alerts;
+            
+            if (!alerts || alerts.length === 0) {
+                container.innerHTML = '<div class="card" style="text-align: center; padding: 3rem;"><p>No alerts generated yet. Run analysis first!</p></div>';
+                return;
+            }
+            
+            container.innerHTML = alerts.map(alert => {
+                const severity = (alert.severity || 'LOW').toLowerCase();
+                const icon = alert.type === 'DEMAND_SURGE' ? '📈' : 
+                             alert.type === 'SENTIMENT_DROP' ? '⚠️' :
+                             alert.type === 'DECLINING_CATEGORY' ? '📉' :
+                             alert.type === 'HIGH_SATISFACTION' ? '🌟' : '🔔';
+                
+                return `
+                    <div class="alert-item ${severity}">
+                        <span class="alert-icon">${icon}</span>
+                        <div class="alert-content">
+                            <div class="alert-message">${alert.message}</div>
+                            <div class="alert-action">💡 Action: ${alert.action || 'Review situation'}</div>
+                            <div class="alert-meta">${alert.type} • ${alert.severity} Priority • ${new Date(alert.timestamp).toLocaleString()}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render Regions
+        function renderRegions() {
+            const grid = document.getElementById('region-grid');
+            const regions = dashboardData.region_data;
+            
+            if (!regions || Object.keys(regions).length === 0) {
+                grid.innerHTML = '<p style="color: #94a3b8;">No regional data available.</p>';
+                return;
+            }
+            
+            grid.innerHTML = Object.entries(regions).map(([name, data]) => `
+                <div class="region-item">
+                    <h4>📍 ${name}</h4>
+                    <div class="count">${data.total}</div>
+                    <div style="font-size: 0.75rem; color: #94a3b8;">reviews</div>
+                    <div style="margin-top: 4px; font-size: 0.75rem;">
+                        <span style="color: #10b981;">👍${data.positive}</span> 
+                        <span style="color: #ef4444;">👎${data.negative}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Charts
+        function renderCharts() {
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+
+            // 1. Sentiment Pie Chart
+            const products = dashboardData.products;
+            let totalPos = 0, totalNeg = 0, totalNeu = 0;
+            products.forEach(p => {
+                totalPos += parseFloat(p.avg_positive) || 0;
+                totalNeg += parseFloat(p.avg_negative) || 0;
+                totalNeu += parseFloat(p.avg_neutral) || 0;
+            });
+
+            charts.sentiment = new Chart(document.getElementById('sentimentChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Positive', 'Negative', 'Neutral'],
+                    datasets: [{
+                        data: [totalPos, totalNeg, totalNeu],
+                        backgroundColor: ['#10b981', '#ef4444', '#64748b'],
+                        borderWidth: 0,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#94a3b8', padding: 20, font: { family: 'Inter' } }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+
+            // 2. Category Bar Chart
+            const categories = {};
+            products.forEach(p => {
+                const cat = p.category;
+                if (!categories[cat]) categories[cat] = { pos: 0, neg: 0, count: 0 };
+                categories[cat].pos += parseFloat(p.avg_positive) || 0;
+                categories[cat].neg += parseFloat(p.avg_negative) || 0;
+                categories[cat].count++;
+            });
+
+            const catLabels = Object.keys(categories);
+            const catPos = catLabels.map(c => (categories[c].pos / categories[c].count).toFixed(1));
+            const catNeg = catLabels.map(c => (categories[c].neg / categories[c].count).toFixed(1));
+
+            charts.category = new Chart(document.getElementById('categoryChart'), {
+                type: 'bar',
+                data: {
+                    labels: catLabels,
+                    datasets: [
+                        {
+                            label: 'Positive %',
+                            data: catPos,
+                            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'Negative %',
+                            data: catNeg,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#94a3b8', font: { family: 'Inter' } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8', font: { family: 'Inter', size: 11 } },
+                            grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // 3. Trends Line Chart
+            const trends = dashboardData.trends;
+            const trendColors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4'];
+            
+            const trendDatasets = trends.slice(0, 6).map((t, i) => {
+                let volumes = t.search_volume || t.search_volumes || [];
+                volumes = volumes.map(v => parseInt(v));
+                return {
+                    label: `${t.category}`,
+                    data: volumes,
+                    borderColor: trendColors[i],
+                    backgroundColor: trendColors[i] + '20',
+                    tension: 0.4,
+                    fill: false,
+                    pointRadius: 3
+                };
+            });
+
+            const monthLabels = ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            charts.trends = new Chart(document.getElementById('trendsChart'), {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: trendDatasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#94a3b8', font: { family: 'Inter', size: 11 } }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // 4. Rating Distribution
+            const ratingCounts = [0, 0, 0, 0, 0];
+            products.forEach(p => {
+                const r = Math.round(parseFloat(p.avg_rating) || 3);
+                if (r >= 1 && r <= 5) ratingCounts[r - 1]++;
+            });
+
+            charts.rating = new Chart(document.getElementById('ratingChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+                    datasets: [{
+                        label: 'Products',
+                        data: ratingCounts,
+                        backgroundColor: ['#ef4444', '#f59e0b', '#64748b', '#10b981', '#6366f1'],
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#94a3b8', stepSize: 1 },
+                            grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // 5. Region Chart
+            const regions = dashboardData.region_data || {};
+            const regionNames = Object.keys(regions);
+            const regionTotals = regionNames.map(r => regions[r].total);
+
+            if (regionNames.length > 0) {
+                charts.region = new Chart(document.getElementById('regionChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: regionNames,
+                        datasets: [{
+                            label: 'Reviews by Region',
+                            data: regionTotals,
+                            backgroundColor: regionNames.map((_, i) => trendColors[i % trendColors.length] + '99'),
+                            borderColor: regionNames.map((_, i) => trendColors[i % trendColors.length]),
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#94a3b8' },
+                                grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                            },
+                            y: {
+                                ticks: { color: '#94a3b8', font: { family: 'Inter' } },
+                                grid: { color: 'rgba(99, 102, 241, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

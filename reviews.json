@@ -1,0 +1,252 @@
+[
+  {
+    "product_id": "P001",
+    "product_name": "Wireless Earbuds Pro",
+    "category": "Electronics",
+    "review_text": "Amazing sound quality! Best earbuds I've ever used. Battery life is incredible.",
+    "rating": 5,
+    "reviewer": "Rahul M",
+    "date": "2024-12-01",
+    "region": "Mumbai"
+  },
+  {
+    "product_id": "P001",
+    "product_name": "Wireless Earbuds Pro",
+    "category": "Electronics",
+    "review_text": "Good product but the charging case broke after 2 weeks. Disappointed with build quality.",
+    "rating": 2,
+    "reviewer": "Priya S",
+    "date": "2024-12-02",
+    "region": "Delhi"
+  },
+  {
+    "product_id": "P001",
+    "product_name": "Wireless Earbuds Pro",
+    "category": "Electronics",
+    "review_text": "Decent for the price. Sound is okay, nothing extraordinary. Comfortable fit though.",
+    "rating": 3,
+    "reviewer": "Amit K",
+    "date": "2024-12-03",
+    "region": "Bangalore"
+  },
+  {
+    "product_id": "P002",
+    "product_name": "Organic Face Cream",
+    "category": "Beauty",
+    "review_text": "My skin feels so soft and hydrated! Love the natural ingredients. Will buy again!",
+    "rating": 5,
+    "reviewer": "Sneha R",
+    "date": "2024-12-01",
+    "region": "Chennai"
+  },
+  {
+    "product_id": "P002",
+    "product_name": "Organic Face Cream",
+    "category": "Beauty",
+    "review_text": "Caused allergic reaction on my sensitive skin. Not suitable for all skin types.",
+    "rating": 1,
+    "reviewer": "Kavya P",
+    "date": "2024-12-02",
+    "region": "Hyderabad"
+  },
+  {
+    "product_id": "P002",
+    "product_name": "Organic Face Cream",
+    "category": "Beauty",
+    "review_text": "Average cream. Nothing special about it. Overpriced for what it offers.",
+    "rating": 2,
+    "reviewer": "Meera D",
+    "date": "2024-12-03",
+    "region": "Pune"
+  },
+  {
+    "product_id": "P003",
+    "product_name": "Running Shoes Ultra",
+    "category": "Sports",
+    "review_text": "Perfect for marathon training! Great cushioning and support. Highly recommend!",
+    "rating": 5,
+    "reviewer": "Vikram J",
+    "date": "2024-12-01",
+    "region": "Mumbai"
+  },
+  {
+    "product_id": "P003",
+    "product_name": "Running Shoes Ultra",
+    "category": "Sports",
+    "review_text": "Size runs small. Had to return and order a bigger size. Quality is good though.",
+    "rating": 3,
+    "reviewer": "Arjun N",
+    "date": "2024-12-02",
+    "region": "Delhi"
+  },
+  {
+    "product_id": "P003",
+    "product_name": "Running Shoes Ultra",
+    "category": "Sports",
+    "review_text": "Sole came off after just one month of use. Terrible durability. Waste of money!",
+    "rating": 1,
+    "reviewer": "Suresh B",
+    "date": "2024-12-03",
+    "region": "Kolkata"
+  },
+  {
+    "product_id": "P004",
+    "product_name": "Smart Water Bottle",
+    "category": "Health",
+    "review_text": "Tracks my water intake perfectly! The app integration is seamless. Love it!",
+    "rating": 5,
+    "reviewer": "Ananya G",
+    "date": "2024-12-01",
+    "region": "Bangalore"
+  },
+  {
+    "product_id": "P004",
+    "product_name": "Smart Water Bottle",
+    "category": "Health",
+    "review_text": "The LED display stopped working after a week. Customer support was unhelpful.",
+    "rating": 1,
+    "reviewer": "Ravi T",
+    "date": "2024-12-02",
+    "region": "Chennai"
+  },
+  {
+    "product_id": "P004",
+    "product_name": "Smart Water Bottle",
+    "category": "Health",
+    "review_text": "Interesting concept but too expensive. A regular bottle does the same job.",
+    "rating": 2,
+    "reviewer": "Deepak M",
+    "date": "2024-12-03",
+    "region": "Hyderabad"
+  },
+  {
+    "product_id": "P005",
+    "product_name": "Portable Blender",
+    "category": "Kitchen",
+    "review_text": "Makes smoothies on the go! Perfect for gym. Charges via USB-C. Game changer!",
+    "rating": 5,
+    "reviewer": "Nisha K",
+    "date": "2024-12-01",
+    "region": "Mumbai"
+  },
+  {
+    "product_id": "P005",
+    "product_name": "Portable Blender",
+    "category": "Kitchen",
+    "review_text": "Motor is too weak. Cannot blend frozen fruits. Only works with soft ingredients.",
+    "rating": 2,
+    "reviewer": "Pooja S",
+    "date": "2024-12-02",
+    "region": "Delhi"
+  },
+  {
+    "product_id": "P005",
+    "product_name": "Portable Blender",
+    "category": "Kitchen",
+    "review_text": "Leaked all over my bag! Worst purchase ever. Do not buy this product!",
+    "rating": 1,
+    "reviewer": "Karan V",
+    "date": "2024-12-03",
+    "region": "Pune"
+  },
+  {
+    "product_id": "P006",
+    "product_name": "Bamboo Sunglasses",
+    "category": "Fashion",
+    "review_text": "Stylish and eco-friendly! Getting so many compliments. Lightweight and comfortable.",
+    "rating": 5,
+    "reviewer": "Ishaan R",
+    "date": "2024-12-01",
+    "region": "Goa"
+  },
+  {
+    "product_id": "P006",
+    "product_name": "Bamboo Sunglasses",
+    "category": "Fashion",
+    "review_text": "Looks cheap in person. Photos were misleading. Not worth the price at all.",
+    "rating": 1,
+    "reviewer": "Tanvi M",
+    "date": "2024-12-02",
+    "region": "Mumbai"
+  },
+  {
+    "product_id": "P006",
+    "product_name": "Bamboo Sunglasses",
+    "category": "Fashion",
+    "review_text": "Pretty good for the price. UV protection works well. Bamboo frame feels unique.",
+    "rating": 4,
+    "reviewer": "Aditya P",
+    "date": "2024-12-03",
+    "region": "Jaipur"
+  },
+  {
+    "product_id": "P007",
+    "product_name": "AI Study Lamp",
+    "category": "Electronics",
+    "review_text": "Auto adjusts brightness based on ambient light! Perfect for late night studying.",
+    "rating": 5,
+    "reviewer": "Shreya H",
+    "date": "2024-12-01",
+    "region": "Delhi"
+  },
+  {
+    "product_id": "P007",
+    "product_name": "AI Study Lamp",
+    "category": "Electronics",
+    "review_text": "The AI feature is gimmicky. It's basically a regular lamp with a light sensor.",
+    "rating": 2,
+    "reviewer": "Rohan D",
+    "date": "2024-12-02",
+    "region": "Bangalore"
+  },
+  {
+    "product_id": "P008",
+    "product_name": "Protein Bar Pack",
+    "category": "Health",
+    "review_text": "Tastes amazing! Finally a protein bar that doesn't taste like cardboard. Great macros!",
+    "rating": 5,
+    "reviewer": "Fitness_Guru",
+    "date": "2024-12-01",
+    "region": "Mumbai"
+  },
+  {
+    "product_id": "P008",
+    "product_name": "Protein Bar Pack",
+    "category": "Health",
+    "review_text": "Too much sugar for a protein bar. Misleading nutritional information on packaging.",
+    "rating": 1,
+    "reviewer": "HealthFirst",
+    "date": "2024-12-02",
+    "region": "Delhi"
+  },
+  {
+    "product_id": "P008",
+    "product_name": "Protein Bar Pack",
+    "category": "Health",
+    "review_text": "Good taste but melts easily in Indian weather. Packaging needs improvement.",
+    "rating": 3,
+    "reviewer": "NutriBoy",
+    "date": "2024-12-03",
+    "region": "Chennai"
+  },
+  {
+    "product_id": "P009",
+    "product_name": "Yoga Mat Premium",
+    "category": "Sports",
+    "review_text": "Non-slip surface is excellent! Thick cushioning protects my knees. Best mat ever!",
+    "rating": 5,
+    "reviewer": "YogaLover",
+    "date": "2024-12-01",
+    "region": "Rishikesh"
+  },
+  {
+    "product_id": "P009",
+    "product_name": "Yoga Mat Premium",
+    "category": "Sports",
+    "review_text": "Strong chemical smell even after airing for a week. Gave me headaches during practice.",
+    "rating": 1,
+    "reviewer": "WellnessQueen",
+    "date": "2024-12-02",
+    "region": "Pune"
+  }
+]
