@@ -73,3 +73,21 @@ Participated and built this under hackathon conditions.
 
 The project used a total of 8 AWS services. Amazon S3 was used for two purposes — storing raw data files like reviews.json and trends.json, and also hosting the static frontend website. AWS Lambda served as the entire serverless backend with 4 Python 3.9 functions handling data ingestion, sentiment analysis, trend detection, and API routing. Amazon Cognito was used for secure user authentication with OTP-based login. Amazon DynamoDB acted as the NoSQL database with 4 tables storing Sentiments, Products, Trends, and Alerts. Amazon Comprehend provided the AI-powered NLP sentiment analysis, classifying each customer review as Positive, Negative, or Neutral. API Gateway exposed all the REST endpoints to the frontend with CORS enabled on the production stage. Amazon CloudFront handled CDN delivery of the dashboard over HTTPS to the browser. Finally, Amazon EC2 was used as a hands-on virtual server instance during the workshop training mini projects.
 For Reviews like Positive , Negative and Neutral We use an the Comprehent AWS Service. For trends and alerts also same Comprehen using an the Level of the Reviews.
+---
+
+## 👨‍💻 Contributors
+- Vivek — Project Lead
+- Manav Chaudhari — Co-Developer
+
+## 🔧 Contributions
+
+### Manav Chaudhari
+- Contributed to full-stack development of the RetailPulse system
+- Assisted in designing AWS serverless architecture (Lambda, API Gateway, DynamoDB)
+- Worked on frontend-backend integration and testing
+- Improved system performance and debugging
+- Enhanced project documentation and README structure
+
+### Vivek
+- Led project development and architecture design
+- Implemented core backend services and AWS integrations
