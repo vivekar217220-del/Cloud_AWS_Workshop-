@@ -1,31 +1,57 @@
 # RetailPulse
 
-A retail intelligence dashboard built during an AWS Cloud Workshop. It brings product trends, customer-review sentiment, and alert rules into one interface for small store owners. RetailPulse was a top finalist at the AWS Cloud Hackathon in March 2026.
+RetailPulse is a retail intelligence dashboard built for an AWS Cloud Workshop hackathon. It brings product trends, customer-review sentiment, and rule-based alerts together so a small retailer can see which products and regions warrant attention. The project was a top finalist at the AWS Cloud Hackathon in March 2026.
 
 ![RetailPulse dashboard screenshot](<Screenshot 2026-03-22 161611.png>)
 
-## What the dashboard shows
+## Dashboard views
 
-- Product and regional trends
-- Customer-review sentiment from Amazon Comprehend
-- Alerts generated from rules and trend signals
+| View | What it shows |
+| --- | --- |
+| Overview | Product, review, trend, and alert counts at a glance |
+| Products | Review counts, average ratings, and sentiment by product |
+| Trends | Product momentum and regional signals |
+| Alerts | Prioritized items generated from review or trend conditions |
+| Regional view | City-level distributions to help compare customer response across locations |
 
 ## Workshop architecture
 
-| Stage | AWS services |
-| --- | --- |
-| Input and data storage | Amazon S3 for source data and DynamoDB for application records |
-| Processing | AWS Lambda for ingestion and trend processing, with Amazon Comprehend for sentiment |
-| Delivery | API Gateway for REST endpoints and CloudFront with S3 for the dashboard |
+```text
+Reviews, trend data, and alert rules -> Amazon S3
+  -> AWS Lambda for ingestion, sentiment requests, and trend processing
+     -> Amazon Comprehend for sentiment classification
+     -> Amazon DynamoDB for processed records
+  -> Amazon API Gateway -> Dashboard JSON
+
+Amazon S3 and CloudFront -> Dashboard HTML -> Browser
+```
+
+S3 held the workshop inputs and also hosted the static website. Lambda handled ingestion, sentiment processing, trend detection, and API responses. Amazon Comprehend supplied sentiment scores for customer reviews. DynamoDB held the resulting product, sentiment, trend, and alert records. The dashboard used API Gateway for data access, and CloudFront served the frontend.
+
+The browser implementation has controls to request ingestion and analysis, then refresh the dashboard. Those operations require a running workshop-compatible API. The checked-in frontend can also render its own embedded sample response.
 
 ## Explore the demo
 
-Open [index.html](index.html) in a browser. The dashboard can display bundled sample data if the workshop API is unavailable. The repository contains the frontend, sample inputs, and screenshots.
+1. Download or clone the repository and open [index.html](index.html) in a browser.
+2. If the dashboard reports that it could not reach the API, select **Load Demo Data**.
+3. Compare the overview counts with the product and alert views. Inspect the trends and regional views to see how the same records are summarized.
+4. If charts appear blank, check that the browser can load the page's externally hosted chart library.
 
-- [Sample reviews](reviews.json), [market trends](market_trends.json), and [alert rules](alert_rules.json)
-- [Additional dashboard screenshot](<Screenshot 2026-03-22 164943.png>)
+The demo data is a fixed browser-side snapshot. Use it to explore the interface and review the separate JSON fixtures for examples of the workshop inputs.
+
+## Repository guide
+
+| File | Purpose |
+| --- | --- |
+| [index.html](index.html) | Dashboard markup, styles, charts, API calls, and sample-data fallback |
+| [reviews.json](reviews.json) | Sample product reviews |
+| [market_trends.json](market_trends.json) | Sample product and regional trend records |
+| [alert_rules.json](alert_rules.json) | Example conditions used to define alerts |
+| [Dashboard screenshot](<Screenshot 2026-03-22 161611.png>) and [additional screenshot](<Screenshot 2026-03-22 164943.png>) | Views captured during the workshop |
+
+This repository contains the dashboard, sample inputs, and screenshots. Recreating the live workflow requires provisioning the backend services and configuring the dashboard for your endpoint. The Lambda implementation and infrastructure configuration are outside this repository.
 
 ## Contributors
 
-- **Vivek Chaudhary** — Led the project and architecture, and implemented core backend services and AWS integrations.
-- **Manav Chaudhari** — Co-developed the application and contributed to serverless design, integration, testing, and documentation.
+- **Vivek Chaudhary** led project development and architecture, including core backend services and AWS integrations.
+- **Manav Chaudhari** co-developed the project and contributed to serverless design, frontend and backend integration, testing, and documentation.
